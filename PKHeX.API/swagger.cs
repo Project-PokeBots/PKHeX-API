@@ -99,6 +99,7 @@ if (app.Environment.IsDevelopment())
 
 	app.UseSwaggerUI(c => {
 		c.SwaggerEndpoint("/swagger/v2/swagger.json", "PKHeX-API v2");
+		c.InjectStylesheet("swagger-ui/index.css");
 	});
 }
 			

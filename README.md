@@ -4,6 +4,9 @@
 ASP.Net Core REST API providing PKHeX & ALM functionality.
 
 This API currently supports creating Pokémon files using showdown sets for the following games:
+- B2W2
+- ORAS
+- USUM
 - LGPE
 - SWSH
 - BDSP

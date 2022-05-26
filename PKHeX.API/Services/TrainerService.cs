@@ -19,6 +19,27 @@ public class TrainerService
 		
 		switch (game)
 		{
+			case SupportedGame.B2W2:
+			{
+				var sav5file  = new SAV5B2W2();
+				fileData.CopyTo(sav5file.PlayerData.Data);
+				saveFile = sav5file;
+				break;
+			}
+			case SupportedGame.ORAS:
+			{
+				var sav6file  = new SAV6AO();
+				fileData.CopyTo(sav6file.Status.Data);
+				saveFile = sav6file;
+				break;
+			}
+			case SupportedGame.USUM:
+			{
+				var sav7file  = new SAV7SM();
+				fileData.CopyTo(sav7file.MyStatus.Data);
+				saveFile = sav7file;
+				break;
+			}
 			case SupportedGame.LGPE:
 			{
 				var sav7bfile = new SAV7b();

@@ -22,11 +22,14 @@ public class PokemonService
 		await using var stream = new MemoryStream();
 		await file.CopyToAsync(stream);
 
-		var pokemon = PKMConverter.GetPKMfromBytes(stream.GetBuffer(), file.FileName.Contains("pk6") ? 6 : 7);
+		var pokemon = EntityFormat.GetFromBytes(stream.GetBuffer(), file.FileName.Contains("pk6") ? 6 : 7);
 
 		if (pokemon == null) throw new BadRequestException("Couldn't parse provided file to any possible pokemon save file format.");
 
 		var correctGame = game switch {
+			SupportedGame.B2W2 => pokemon is PK5,
+			SupportedGame.ORAS => pokemon is PK6,
+			SupportedGame.USUM => pokemon is PK7,
 			SupportedGame.LGPE => pokemon is PB7,
 			SupportedGame.SWSH => pokemon is PK8,
 			SupportedGame.BDSP => pokemon is PB8,
@@ -47,6 +50,9 @@ public class PokemonService
 
 		var sav = game switch
 		{
+			SupportedGame.B2W2 => SaveUtil.GetBlankSAV(GameVersion.B2W2, ot),
+			SupportedGame.ORAS => SaveUtil.GetBlankSAV(GameVersion.ORAS, ot),
+			SupportedGame.USUM => SaveUtil.GetBlankSAV(GameVersion.US, ot),
 			SupportedGame.LGPE => SaveUtil.GetBlankSAV(GameVersion.GE, ot),
 			SupportedGame.SWSH => SaveUtil.GetBlankSAV(GameVersion.SWSH, ot),
 			SupportedGame.BDSP => SaveUtil.GetBlankSAV(GameVersion.BD, ot),
@@ -58,10 +64,13 @@ public class PokemonService
 
 		pkm = game switch
 		{
-			SupportedGame.LGPE => PKMConverter.ConvertToType(pkm, typeof(PB7), out _) ?? pkm,
-			SupportedGame.SWSH => PKMConverter.ConvertToType(pkm, typeof(PK8), out _) ?? pkm,
-			SupportedGame.BDSP => PKMConverter.ConvertToType(pkm, typeof(PB8), out _) ?? pkm,
-			SupportedGame.PLA => PKMConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
+			SupportedGame.B2W2 => EntityConverter.ConvertToType(pkm, typeof(PK5), out _) ?? pkm,
+			SupportedGame.ORAS => EntityConverter.ConvertToType(pkm, typeof(PK6), out _) ?? pkm,
+			SupportedGame.USUM => EntityConverter.ConvertToType(pkm, typeof(PK7), out _) ?? pkm,
+			SupportedGame.LGPE => EntityConverter.ConvertToType(pkm, typeof(PB7), out _) ?? pkm,
+			SupportedGame.SWSH => EntityConverter.ConvertToType(pkm, typeof(PK8), out _) ?? pkm,
+			SupportedGame.BDSP => EntityConverter.ConvertToType(pkm, typeof(PB8), out _) ?? pkm,
+			SupportedGame.PLA => EntityConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
 			_ => throw new ArgumentOutOfRangeException(nameof(game), game, null)
 		};
 
