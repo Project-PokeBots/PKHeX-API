@@ -27,6 +27,8 @@ public class PokemonService
 		if (pokemon == null) throw new BadRequestException("Couldn't parse provided file to any possible pokemon save file format.");
 
 		var correctGame = game switch {
+			SupportedGame.RS => pokemon is PK3,
+			SupportedGame.PT => pokemon is PK4,
 			SupportedGame.B2W2 => pokemon is PK5,
 			SupportedGame.ORAS => pokemon is PK6,
 			SupportedGame.USUM => pokemon is PK7,
@@ -50,6 +52,8 @@ public class PokemonService
 
 		var sav = game switch
 		{
+			SupportedGame.RS => SaveUtil.GetBlankSAV(GameVersion.RS, ot),
+			SupportedGame.PT => SaveUtil.GetBlankSAV(GameVersion.Pt, ot),
 			SupportedGame.B2W2 => SaveUtil.GetBlankSAV(GameVersion.B2W2, ot),
 			SupportedGame.ORAS => SaveUtil.GetBlankSAV(GameVersion.ORAS, ot),
 			SupportedGame.USUM => SaveUtil.GetBlankSAV(GameVersion.US, ot),
@@ -64,6 +68,8 @@ public class PokemonService
 
 		pkm = game switch
 		{
+			SupportedGame.RS => EntityConverter.ConvertToType(pkm, typeof(PK3), out _) ?? pkm,
+			SupportedGame.PT => EntityConverter.ConvertToType(pkm, typeof(PK4), out _) ?? pkm,
 			SupportedGame.B2W2 => EntityConverter.ConvertToType(pkm, typeof(PK5), out _) ?? pkm,
 			SupportedGame.ORAS => EntityConverter.ConvertToType(pkm, typeof(PK6), out _) ?? pkm,
 			SupportedGame.USUM => EntityConverter.ConvertToType(pkm, typeof(PK7), out _) ?? pkm,

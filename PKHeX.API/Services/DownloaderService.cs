@@ -53,6 +53,8 @@ public class DownloaderService
 			throw new BadRequestException("Invalid pkm file");
 
 		return wantedGame switch {
+			SupportedGame.RS => EntityConverter.ConvertToType(pkm, typeof(PK3), out _) ?? pkm,
+			SupportedGame.PT => EntityConverter.ConvertToType(pkm, typeof(PK4), out _) ?? pkm,
 			SupportedGame.B2W2 => EntityConverter.ConvertToType(pkm, typeof(PK5), out _) ?? pkm,
 			SupportedGame.ORAS => EntityConverter.ConvertToType(pkm, typeof(PK6), out _) ?? pkm,
 			SupportedGame.USUM => EntityConverter.ConvertToType(pkm, typeof(PK7), out _) ?? pkm,

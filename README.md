@@ -4,13 +4,9 @@
 ASP.Net Core REST API providing PKHeX & ALM functionality.
 
 This API currently supports creating Pokémon files using showdown sets for the following games:
-- B2W2
-- ORAS
-- USUM
-- LGPE
-- SWSH
-- BDSP
-- PLA
+- RS        - ORAS      - SWSH
+- PT        - USUM      - BDSP
+- B2W2      - LGPE      - PLA
 
 # Deployment
 [Railway.app](https://railway.app/) is a platform where you can host and deploy apps in minutes. Clone this project as a private repo, click on "start a new project" on the railway dashboard, followed by "deploy from repo".

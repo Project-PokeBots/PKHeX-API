@@ -6,6 +6,16 @@ namespace PKHeX.API.Models;
 public enum SupportedGame
 {
 	/// <summary>
+	/// Pokemon Ruby and Sapphire
+	/// </summary>
+	RS,
+
+	/// <summary>
+	/// Pokemon Heartgold and Soulsilver and Pokemon Diamond, Pearl, and Plantium
+	/// </summary>
+	PT,
+
+	/// <summary>
 	/// Pokemon Black and White and Pokemon Black 2 and White 2
 	/// </summary>
 	B2W2,
