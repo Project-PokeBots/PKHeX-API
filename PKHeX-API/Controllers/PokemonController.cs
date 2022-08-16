@@ -11,6 +11,7 @@ using PKHeX.API.Exceptions;
 using PKHeX.API.Models;
 using PKHeX.API.Services;
 using PKHeX.API.Util;
+using QRCoder;
 
 namespace PKHeX.API.Controllers {
 
@@ -39,8 +40,7 @@ namespace PKHeX.API.Controllers {
 		/// <returns>Pokemon Data as File</returns>
 		/// <response code="200">Returns the Pokemon Data of Showdown set</response>
 		/// <response code="400">The Pokemon set is invalid or illegal</response>     
-		[HttpGet, HttpPost]
-		[Route("showdown")]
+		[HttpPost("showdown")]
 		[Produces(MediaTypeNames.Application.Octet, MediaTypeNames.Application.Json)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,21 +59,15 @@ namespace PKHeX.API.Controllers {
 		/// <returns>Nothing</returns>
 		/// <response code="204">Pokemon is legal</response>
 		/// <response code="400">Pokemon is illegal</response>  
-		[HttpGet, HttpPost]
-		[Route("showdown/legality")]
+		[HttpPost("showdown/legality")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> CheckShowdownLegality([FromRoute] string game, [FromBody, Required] PokemonShowdownRequest body)
 		{
 			var pkm = await PokemonService.GetPokemonFromShowdown(body.ShowdownSet, SupportGameUtil.GetFromString(game));
 
-			var LA = new LegalityAnalysis(pkm);
-			string Legality_Report = LA.Report();
+			return await ReturnPokemonLegality(pkm);
 
-			if (Legality_Report == "Legal!")
-				return NoContent();
-
-			throw new LegalityException(Legality_Report);
 		}
 
 		/// <summary>
@@ -112,46 +106,19 @@ namespace PKHeX.API.Controllers {
 		{
 			var pkm = await DownloaderService.DownloadPkmAsync(new Uri(url), size, SupportGameUtil.GetFromString(game));
 
-			var LA = new LegalityAnalysis(pkm);
-			string Legality_Report = LA.Report();
+			return await ReturnPokemonLegality(pkm);
 
-			if (Legality_Report == "Legal!")
-				return NoContent();
-
-			throw new LegalityException(Legality_Report);
 		}
 
 		/// <summary>
-		/// Converts file to showdown set
+		/// Returns Pokemon Data from file
 		/// </summary>
 		/// <param name="game">Wanted game for the returned file feedback</param>
 		/// <param name="file">Uploaded Pokemon file</param>
 		/// <returns>Pokemon Data of file</returns>
 		/// <response code="200">Pokemon is evaluted</response>
 		/// <response code="400">Pokemon file is corrupted</response>  
-		[HttpGet, HttpPost]
-		[Route("convert")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[RequestFormLimits(MultipartBodyLengthLimit = 376)]
-		public async Task<IActionResult> GetShowdownPokemonFromFile([FromRoute] string game, [Required] IFormFile file)
-		{
-			var pkm = await PokemonService.GetPokemonFromFormFileAsync(file, SupportGameUtil.GetFromString(game));
-
-			string swdn = ShowdownParsing.GetShowdownText(pkm);
-			return Content(swdn);
-		}
-
-		/// <summary>
-		/// Gets Pokemon summary from file
-		/// </summary>
-		/// <param name="game">Wanted game for the returned file feedback</param>
-		/// <param name="file">Uploaded Pokemon file</param>
-		/// <returns>Pokemon Data of file</returns>
-		/// <response code="200">Pokemon is evaluted</response>
-		/// <response code="400">Pokemon file is corrupted</response>  
-		[HttpGet, HttpPost]
-		[Route("file")]
+		[HttpPost("file")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[RequestFormLimits(MultipartBodyLengthLimit = 376)]
@@ -242,8 +209,7 @@ namespace PKHeX.API.Controllers {
 		/// <returns>Nothing</returns>
 		/// <response code="204">Pokemon is legal</response>
 		/// <response code="400">Pokemon is illegal</response>  
-		[HttpGet, HttpPost]
-		[Route("file/legality")]
+		[HttpPost("file/legality")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[RequestFormLimits(MultipartBodyLengthLimit = 376)]
@@ -251,24 +217,81 @@ namespace PKHeX.API.Controllers {
 		{
 			var pkm = await PokemonService.GetPokemonFromFormFileAsync(file, SupportGameUtil.GetFromString(game));
 
-			var LA = new LegalityAnalysis(pkm);
-            string Legality_Report = LA.Report();
+			return await ReturnPokemonLegality(pkm);
 
-			if (Legality_Report == "Legal!")
-				return NoContent();
+		}
 
-			throw new LegalityException(Legality_Report);
+		/// <summary>
+		/// Converts file to showdown set
+		/// </summary>
+		/// <param name="game">Wanted game for the returned file feedback</param>
+		/// <param name="file">Uploaded Pokemon file</param>
+		/// <returns>Pokemon showdown set</returns>
+		/// <response code="200">Pokemon is evaluted</response>
+		/// <response code="400">Pokemon file is corrupted</response>  
+		[HttpPost("file/showdown")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[RequestFormLimits(MultipartBodyLengthLimit = 376)]
+		public async Task<IActionResult> GetShowdownPokemonFromFile([FromRoute] string game, [Required] IFormFile file)
+		{
+			var pkm = await PokemonService.GetPokemonFromFormFileAsync(file, SupportGameUtil.GetFromString(game));
+
+			string showdown = ShowdownParsing.GetShowdownText(pkm);
+			return Content(showdown);
+		}
+
+		/// <summary>
+		/// Converts file to QR code
+		/// </summary>
+		/// <param name="game">Wanted game for the returned file feedback</param>
+		/// <param name="file">Uploaded Pokemon file</param>
+		/// <returns>QR Image</returns>
+		/// <response code="200">Pokemon is evaluted</response>
+		/// <response code="400">Pokemon file is corrupted</response>  
+		[HttpPost("file/QR")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[RequestFormLimits(MultipartBodyLengthLimit = 376)]
+		public async Task<IActionResult> GetFileToQR([FromRoute] string game, [Required] IFormFile file)
+		{
+
+			var pkm = await PokemonService.GetPokemonFromFormFileAsync(file, SupportGameUtil.GetFromString(game));
+
+			var QRImage = QRMessageUtil.GetMessage(pkm);
+
+			QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+			QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(QRImage, QRCodeGenerator.ECCLevel.Q);
+			PngByteQRCode pngByteQRCode = new PngByteQRCode(qRCodeData);
+			byte[] qrCodeBytes = pngByteQRCode.GetGraphic(20);
+			string qrCodeString = Convert.ToBase64String(qrCodeBytes);
+
+			Response.Headers.Add("X-Pokemon-Species", ((Species)pkm.Species).ToString());
+
+			return Ok(qrCodeString);
 		}
 
 		private async Task<FileContentResult> ReturnPokemonFile(PKM pkm, bool encrypted = false)
 		{
 			Response.Headers.Add("X-Pokemon-Species", ((Species)pkm.Species).ToString());
-			Response.Headers.Add("X-Pokemon-Language", ((LanguageID)pkm.Language).ToString());
 			if (pkm is ISanityChecksum sanityChecksum) Response.Headers.Add("X-Pokemon-Checksum", sanityChecksum.Checksum.ToString());
 
 			pkm.ResetPartyStats();
 
 			return File(await PokemonService.CheckLegalAndGetBytes(pkm, encrypted), MediaTypeNames.Application.Octet);
+		}
+
+		private async Task<NoContentResult> ReturnPokemonLegality(PKM pkm, bool encrypted = false)
+		{
+			Response.Headers.Add("X-Pokemon-Legality", (pkm.IsLegal()).ToString());
+
+			var LA = new LegalityAnalysis(pkm);
+			string Legality_Report = LA.Report();
+
+			if (Legality_Report == "Legal!")
+				return NoContent();
+
+			throw new LegalityException(Legality_Report);
 		}
 	}
 	}

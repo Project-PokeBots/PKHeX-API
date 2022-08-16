@@ -49,7 +49,7 @@ namespace PKHeX.API.Services
 
 			var buffer = await HttpClient.GetByteArrayAsync(uri);
 
-			var pkm = EntityFormat.GetFromBytes(buffer, fileName.Contains("pk6") ? 6 : 7);
+			var pkm = EntityFormat.GetFromBytes(buffer);
 			if (pkm == null)
 				throw new BadRequestException("Invalid pkm file");
 

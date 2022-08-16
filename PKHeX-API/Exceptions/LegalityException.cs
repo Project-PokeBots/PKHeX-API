@@ -3,7 +3,7 @@ using PKHeX.API.Exceptions.Api;
 namespace PKHeX.API.Exceptions
 {
 
-	public class LegalityException : BadRequestApiException
+	public class LegalityException : IllegalPokemonApiException
 	{
 		public LegalityException()
 		{

@@ -23,7 +23,7 @@ namespace PKHeX.API.Services
 			await using var stream = new MemoryStream();
 			await file.CopyToAsync(stream);
 
-			var pokemon = EntityFormat.GetFromBytes(stream.GetBuffer(), file.FileName.Contains("pk6") ? 6 : 7);
+			var pokemon = EntityFormat.GetFromBytes(stream.GetBuffer());
 
 			if (pokemon == null) throw new BadRequestException("Couldn't parse provided file to any possible pokemon save file format.");
 
@@ -56,8 +56,9 @@ namespace PKHeX.API.Services
 
 			var sav = game switch
 			{
-				SupportedGame.RBY => SaveUtil.GetBlankSAV(GameVersion.RB, "TEST"),
-				SupportedGame.GSC => SaveUtil.GetBlankSAV(GameVersion.C, "TEST"),
+				// GetBlankSAV takes at least 1 arg but you need to define OT in request for gen 1/2
+				SupportedGame.RBY => SaveUtil.GetBlankSAV(GameVersion.RBY, "PKHXAPI"),
+				SupportedGame.GSC => SaveUtil.GetBlankSAV(GameVersion.C, "PKHXAPI"),
 				SupportedGame.RS => SaveUtil.GetBlankSAV(GameVersion.RS, ot),
 				SupportedGame.PT => SaveUtil.GetBlankSAV(GameVersion.Pt, ot),
 				SupportedGame.B2W2 => SaveUtil.GetBlankSAV(GameVersion.B2W2, ot),
