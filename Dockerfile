@@ -6,10 +6,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src
-COPY ["PKHeX.API/PKHeX-API.csproj", "PKHeX.API/"]
-RUN dotnet restore "PKHeX.API/PKHeX-API.csproj"
+COPY ["PKHeX-API/PKHeX-API.csproj", "PKHeX-API/"]
+RUN dotnet restore "PKHeX-API/PKHeX-API.csproj"
 COPY . .
-WORKDIR "/src/PKHeX.API"
+WORKDIR "/src/PKHeX-API"
 RUN dotnet build "PKHeX-API.csproj" -c Release -o /app/build
 
 FROM build AS publish
