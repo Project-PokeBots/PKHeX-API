@@ -49,9 +49,12 @@ builder.Services.AddSingleton<AutoLegalityModService>();
 builder.Services.AddHostedService(provider => provider.GetService<AutoLegalityModService>());
 builder.Services.AddSingleton<DownloaderService>();
 builder.Services.AddSingleton<PokemonService>();
+builder.Services.AddSingleton<PKXService>();
+builder.Services.AddSingleton<QRService>();
 builder.Services.AddSingleton<TrainerService>();
+builder.Services.AddSingleton<JSONService>();
 builder.Services.AddSingleton<HttpClient>();
-			
+
 builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(x => x

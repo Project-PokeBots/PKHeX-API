@@ -1,10 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PKHeX.Core;
 using PKHeX.API.Models;
 using PKHeX.API.Services;
 using PKHeX.API.Util;
@@ -32,7 +30,7 @@ namespace PKHeX.API.Controllers
 		/// <returns>Trainer information</returns>
 		/// <exception cref="NotImplementedException">If the specified Game is not yet implemented</exception>
 		[HttpPost("{game}")]
-		public async Task<IActionResult> GetTrainerAsync([FromForm, Required] IFormFile data, string game)
+		public async Task<IActionResult> GetTrainerAsync([Required] IFormFile data, string game)
 		{
 			var trainerInfo = await TrainerService.GetTrainerInfo(data, SupportGameUtil.GetFromString(game));
 

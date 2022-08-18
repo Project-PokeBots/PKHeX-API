@@ -17,6 +17,7 @@
         <PackageReference Include="AspNetCore.ExceptionHandler" Version="1.1.0" />
         <PackageReference Include="Barcode" Version="2022.8.8024" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.5" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="PKHeX.Core" Version="22.5.8" />
         <PackageReference Include="QRCoder" Version="1.4.3" />
         <PackageReference Include="Sentry.AspNetCore" Version="3.17.1" />
