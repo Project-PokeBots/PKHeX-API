@@ -87,10 +87,19 @@ namespace PKHeX.API.Services
 						break;
 					}
 				case SupportedGame.PLA:
+				{
 					var save = new SAV8LA();
 					fileData.CopyTo(save.MyStatus.Data);
 					saveFile = save;
 					break;
+				}
+				case SupportedGame.SCVI:
+				{
+					var save = new SAV9SV();
+					fileData.CopyTo(save.MyStatus.Data);
+					saveFile = save;
+					break;
+				}
 				default:
 					throw new NotImplementedException("Requested Game not implemented yet");
 			}
