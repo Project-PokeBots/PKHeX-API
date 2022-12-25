@@ -3,7 +3,7 @@
 
 ASP.Net Core REST API providing PKHeX & ALM functionality.
 
-This API currently supports Gens 1-8 including LGPE, BDSP, and PLA.
+This API currently supports Gens 1-9 including LGPE, BDSP, and PLA.
 
 ## Wiki
 Check [the wiki](https://github.com/Project-PokeBots/PKHeX-API/wiki) for a full list of commands, supported titles, and a guide on how to host your own API instance.

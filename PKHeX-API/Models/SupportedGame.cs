@@ -64,6 +64,6 @@ namespace PKHeX.API.Models
 		/// <summary>
 		/// Pokemon Scarlet and Violet
 		/// </summary>
-		SCVI,
+		SV,
 	}
 }

@@ -93,7 +93,7 @@ namespace PKHeX.API.Services
 					saveFile = save;
 					break;
 				}
-				case SupportedGame.SCVI:
+				case SupportedGame.SV:
 				{
 					var save = new SAV9SV();
 					fileData.CopyTo(save.MyStatus.Data);
