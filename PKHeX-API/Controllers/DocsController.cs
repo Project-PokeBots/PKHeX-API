@@ -89,7 +89,7 @@ namespace PKHeX.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<OkObjectResult> Games()
         {
-            var message = "Gen1: RBY, Gen2: GSC, Gen3: RS, Gen4: PT, Gen5: B2W2, Gen6: ORAS, Gen7: USUM, Gen7b: LGPE, Gen8: SWSH, Gen8b: BDSP, Gen8a: PLA, Gen9: SV";
+            var message = "Gen1: RBY, Gen2: GSC, Gen3: RS, Gen4: PT, Gen5: B2W2, Gen6: ORAS, Gen7: USUM, Gen7b: LGPE, Gen8: SWSH, Gen8b: BDSP, Gen8a: LA, Gen9: SV";
 
             var JsonResponse = await JSONService.ProcessJsonMessage(Response.StatusCode, message);
 

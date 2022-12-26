@@ -86,7 +86,7 @@ namespace PKHeX.API.Services
 						saveFile = bdspSave;
 						break;
 					}
-				case SupportedGame.PLA:
+				case SupportedGame.LA:
 				{
 					var save = new SAV8LA();
 					fileData.CopyTo(save.MyStatus.Data);

@@ -39,7 +39,7 @@ namespace PKHeX.API.Services
 				SupportedGame.LGPE => pokemon is PB7,
 				SupportedGame.SWSH => pokemon is PK8,
 				SupportedGame.BDSP => pokemon is PB8,
-				SupportedGame.PLA => pokemon is PA8,
+				SupportedGame.LA => pokemon is PA8,
 				SupportedGame.SV => pokemon is PK9,
 				_ => throw new ArgumentOutOfRangeException(nameof(game), game, null)
 			};
@@ -68,7 +68,7 @@ namespace PKHeX.API.Services
 				SupportedGame.LGPE => SaveUtil.GetBlankSAV(GameVersion.GE, ot),
 				SupportedGame.SWSH => SaveUtil.GetBlankSAV(GameVersion.SWSH, ot),
 				SupportedGame.BDSP => SaveUtil.GetBlankSAV(GameVersion.BD, ot),
-				SupportedGame.PLA => SaveUtil.GetBlankSAV(GameVersion.PLA, ot),
+				SupportedGame.LA => SaveUtil.GetBlankSAV(GameVersion.PLA, ot),
 				SupportedGame.SV => SaveUtil.GetBlankSAV(GameVersion.SV, ot),
 				_ => throw new ArgumentOutOfRangeException(nameof(game))
 			};
@@ -87,7 +87,7 @@ namespace PKHeX.API.Services
 				SupportedGame.LGPE => EntityConverter.ConvertToType(pkm, typeof(PB7), out _) ?? pkm,
 				SupportedGame.SWSH => EntityConverter.ConvertToType(pkm, typeof(PK8), out _) ?? pkm,
 				SupportedGame.BDSP => EntityConverter.ConvertToType(pkm, typeof(PB8), out _) ?? pkm,
-				SupportedGame.PLA => EntityConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
+				SupportedGame.LA => EntityConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
 				SupportedGame.SV => EntityConverter.ConvertToType(pkm, typeof(PK9), out _) ?? pkm,
 				_ => throw new ArgumentOutOfRangeException(nameof(game), game, null)
 			};

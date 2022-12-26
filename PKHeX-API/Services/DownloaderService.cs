@@ -65,7 +65,7 @@ namespace PKHeX.API.Services
 				SupportedGame.LGPE => EntityConverter.ConvertToType(pkm, typeof(PB7), out _) ?? pkm,
 				SupportedGame.SWSH => EntityConverter.ConvertToType(pkm, typeof(PK8), out _) ?? pkm,
 				SupportedGame.BDSP => EntityConverter.ConvertToType(pkm, typeof(PB8), out _) ?? pkm,
-				SupportedGame.PLA => EntityConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
+				SupportedGame.LA => EntityConverter.ConvertToType(pkm, typeof(PA8), out _) ?? pkm,
 				SupportedGame.SV => EntityConverter.ConvertToType(pkm, typeof(PK9), out _) ?? pkm,
 				_ => throw new ArgumentOutOfRangeException(nameof(wantedGame), wantedGame, null)
 			};

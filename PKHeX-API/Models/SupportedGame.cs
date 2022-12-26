@@ -59,7 +59,7 @@ namespace PKHeX.API.Models
 		/// <summary>
 		/// Pokemon Legends Arceus
 		/// </summary>
-		PLA,
+		LA,
 		
 		/// <summary>
 		/// Pokemon Scarlet and Violet
