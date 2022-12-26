@@ -69,7 +69,7 @@ namespace PKHeX.API.Services
 				SupportedGame.SWSH => SaveUtil.GetBlankSAV(GameVersion.SWSH, ot),
 				SupportedGame.BDSP => SaveUtil.GetBlankSAV(GameVersion.BD, ot),
 				SupportedGame.PLA => SaveUtil.GetBlankSAV(GameVersion.PLA, ot),
-				SupportedGame.SV => SaveUtil.GetBlankSAV(GameVersion.Gen9, ot),
+				SupportedGame.SV => SaveUtil.GetBlankSAV(GameVersion.SV, ot),
 				_ => throw new ArgumentOutOfRangeException(nameof(game))
 			};
 

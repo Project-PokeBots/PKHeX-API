@@ -25,7 +25,6 @@ namespace PKHeX.API.Services
 			pokemonsummary.Add("CurrentFriendship", pkm.CurrentFriendship.ToString());
 			pokemonsummary.Add("Form ", pkm.Form.ToString());
 			pokemonsummary.Add("IsEgg", pkm.IsEgg.ToString());
-			pokemonsummary.Add("TeraType", pkm.TeraType.ToString());
 			pokemonsummary.Add("IsNicknamed", pkm.IsNicknamed.ToString());
 			pokemonsummary.Add("EXP", pkm.EXP.ToString());
 			pokemonsummary.Add("TID", pkm.TID.ToString());
