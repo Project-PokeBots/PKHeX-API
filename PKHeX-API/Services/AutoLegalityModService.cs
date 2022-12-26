@@ -45,10 +45,10 @@ namespace PKHeX.API.Services
 
 		private static void InitializeTrainerDatabase()
 		{
-			var ot = GetEnvOrThrow("PKHEX_DEFAULT_OT");
-			var trainerId = int.Parse(GetEnvOrThrow("PKHEX_DEFAULT_TID"));
-			var secretId = int.Parse(GetEnvOrThrow("PKHEX_DEFAULT_SID"));
-			var languageName = GetEnvOrThrow("PKHEX_DEFAULT_LANGUAGE");
+			var ot = TryGetEnv("PKHEX_DEFAULT_OT", "PKXAPI");
+			var trainerId = int.Parse(TryGetEnv("PKHEX_DEFAULT_TID", "123456"));
+			var secretId = int.Parse(TryGetEnv("PKHEX_DEFAULT_SID", "1234"));
+			var languageName = TryGetEnv("PKHEX_DEFAULT_LANGUAGE", "English");
 
 			if (!Enum.TryParse<LanguageID>(languageName, true, out var language))
 				throw new Exception($"Invalid default language {languageName}");

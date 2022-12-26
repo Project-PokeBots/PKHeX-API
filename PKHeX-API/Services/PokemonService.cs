@@ -53,7 +53,7 @@ namespace PKHeX.API.Services
 		{
 			var set = new ShowdownSet(showdownSet);
 			var template = new RegenTemplate(set);
-			var ot = GetEnvOrThrow("PKHEX_DEFAULT_OT");
+			var ot = TryGetEnv("PKHEX_DEFAULT_OT", "PKXAPI");
 
 			var sav = game switch
 			{
